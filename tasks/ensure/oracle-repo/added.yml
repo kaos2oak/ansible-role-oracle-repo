@@ -1,0 +1,4 @@
+---
+- name: Ensure oracle public repo added
+  include_tasks: "{{ ansible_os_family }}/added.yml"
+  when: ansible_os_family in ['RedHat']

@@ -1,0 +1,21 @@
+---
+- name: Set centos_repo_text
+  set_fact:
+    centos_repo_text: |
+      [centos]
+      name=CentOS \$releasever - \$basearch
+      baseurl=http://mirror.centos.org/centos/{{ ansible_distribution_major_version }}/os/\$basearch/
+      enabled=1
+      gpgcheck=0
+
+- name: Define CentOS Repo
+  shell: echo "{{ centos_repo_text }}" > /etc/yum.repos.d/centos.repo
+  become: true
+  when: ansible_distribution_major_version | int < 7
+
+- name: Install libselinux-python library
+  yum:
+    name: libselinux-python
+    state: installed
+  become: true
+  when: ansible_distribution_major_version | int < 7
